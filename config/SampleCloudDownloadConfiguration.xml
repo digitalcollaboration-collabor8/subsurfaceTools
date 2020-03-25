@@ -1,0 +1,105 @@
+<subsurface>
+		<!-- download DPR (daily production data reports) -->
+		<!---this example will download DPR data with the reporting period beeing
+		e.g. 2020-01-28 to 2020-02-03, meaning that it will download all daily production reports for the production days
+		2020-01-28 to 2020-02-03-->
+		<dpr>
+			  <fieldName>JOHAN SVERDRUP</fieldName><!--name of the field to download data from-->
+			  <dateFrom>2020-01-28</dateFrom><!-- the first date to query for-->
+	          <dateTo>2020-02-03</dateTo><!-- end date to query for-->
+	          <useUploadedFrom>false</useUploadedFrom><!-- do not use the created date for the period rather use 
+			  the reporting period, in this case it would be reporting period (production day start and end)-->
+	          <common>
+	              <format>XML</format><!-- the format to download either XML or PDF-->
+	              <outputFolder>./JOHAN_SVERDRUP</outputFolder><!--folder where to store downloaded file-->
+	              <fileOutputPrefix>JOHAN_SVERDRUP</fileOutputPrefix><!--prefix all downloaded files with this, usefuel 
+				  e.g. if downloaing everything ton one folder-->
+	          </common>
+		</dpr>
+		<!---this example will download DPR data created in the period
+		e.g. 2020-01-28 to 2020-02-03, meaning that it will download all daily production reports that was created or updated
+		in this time period for the field Johan Sverdrup-->
+		<dpr>
+			  <fieldName>JOHAN SVERDRUP</fieldName><!--name of the field to download data from-->
+			  <dateFrom>2020-01-28</dateFrom><!-- the first date to query for-->
+	          <dateTo>2020-02-03</dateTo><!-- end date to query for-->
+	          <useUploadedFrom>true</useUploadedFrom><!-- use the created date for the period meaning download created or modified
+			  data in the given timeperiod-->
+	          <common>
+	              <format>PDF</format><!-- the format to download either XML or PDF-->
+	              <outputFolder>./JOHAN_SVERDRUP</outputFolder><!--folder where to store downloaded file-->
+	              <fileOutputPrefix>JOHAN_SVERDRUP</fileOutputPrefix><!--prefix all downloaded files with this, usefuel 
+				  e.g. if downloaing everything ton one folder-->
+	          </common>
+		</dpr>
+		<!---this example will download DPR data created in the period
+		todays date - 2 days, meaning that it will download all daily production reports that was created or updated
+		in for the last 2 days for the field Johan Sverdrup-->
+		<dpr>
+			  <fieldName>JOHAN SVERDRUP</fieldName><!--name of the field to download data from-->
+			  <rollDays>2</rollDays><!-- by setting this the client will automatically generate the timeperiod to query for 
+			  based on todays date minus 2 days-->
+	          <useUploadedFrom>true</useUploadedFrom><!-- use the created date for the period meaning download created or modified
+			  data in the given timeperiod-->
+	          <common>
+	              <format>PDF</format><!-- the format to download either XML or PDF-->
+	              <outputFolder>./JOHAN_SVERDRUP</outputFolder><!--folder where to store downloaded file-->
+	              <fileOutputPrefix>JOHAN_SVERDRUP</fileOutputPrefix><!--prefix all downloaded files with this, usefuel 
+				  e.g. if downloaing everything ton one folder-->
+	          </common>
+		</dpr>
+		<!-- this example will download monthly governmental xml reports for month of Jan 2020 for the field Johan Sverdrup-->
+		<mprmlGov>
+			  <fieldName>JOHAN SVERDRUP</fieldName><!--name of the field to download data from-->
+			  <dateFrom>2020-01-01</dateFrom><!-- the first date to query for-->
+	          <dateTo>2020-02-01</dateTo><!-- end date to query for-->
+	          <useUploadedFrom>false</useUploadedFrom><!-- do not use the created date for the period rather use 
+			  the reporting period, in this case it would be reporting period (production day start and end)-->
+	          <common>
+	              <format>XML</format><!--only xml supported for this format-->
+	              <outputFolder>./JOHAN_SVERDRUP_MONTH</outputFolder>
+	              <fileOutputPrefix>JOHAN_SVERDRUP_MONTH</fileOutputPrefix>
+	          </common>
+		</mprmlGov>
+		<!-- this example will download monthly governmental xml reports for created or updated in the last 2 days for the field Johan Sverdrup-->
+		<mprmlGov>
+			  <fieldName>JOHAN SVERDRUP</fieldName><!--name of the field to download data from-->
+			  <rollDays>2</rollDays><!-- by setting this the client will automatically generate the timeperiod to query for 
+			  based on todays date minus 2 days-->
+			  <useUploadedFrom>true</useUploadedFrom><!-- use the created date for the period meaning download created or modified
+			  data in the given timeperiod-->
+	          <common>
+	              <format>XML</format><!--only xml supported for this format-->
+	              <outputFolder>./JOHAN_SVERDRUP_MONTH</outputFolder>
+	              <fileOutputPrefix>JOHAN_SVERDRUP_MONTH</fileOutputPrefix>
+	          </common>
+		</mprmlGov>
+		<!-- this example will download monthly partner xml reports created or updated in the last 2 days for the specified field-->
+		<mprmlPartner>
+			  <fieldName>JOHAN SVERDRUP</fieldName><!--name of the field to download data from-->
+			  <rollDays>2</rollDays><!-- by setting this the client will automatically generate the timeperiod to query for 
+			  based on todays date minus 2 days-->
+			  <useUploadedFrom>true</useUploadedFrom><!-- use the created date for the period meaning download created or modified
+			  data in the given timeperiod-->
+	          <common>
+	              <format>XML</format><!--only xml supported for this format-->
+	              <outputFolder>./JOHAN_SVERDRUP_MONTH</outputFolder>
+	              <fileOutputPrefix>JOHAN_SVERDRUP_MONTH</fileOutputPrefix>
+	          </common>
+		</mprmlPartner>
+		<!--this example will download all DDRML (daily drilling reports) xml files for which the calling user has access
+		, created or updated in the last 2 days-->
+		<ddrml>
+	
+	          <rollDays>2</rollDays>
+	          <useUploadedFrom>true</useUploadedFrom>
+	          <common>
+	              <format>XML</format>
+	              <outputFolder>./DDRMLS</outputFolder>
+	              <fileOutputPrefix>DDRML</fileOutputPrefix>
+	          </common>
+		</ddrml>
+
+</subsurface>
+
+
