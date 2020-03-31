@@ -7,9 +7,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"time"
 
 	"github.com/digitalcollaboration-collabor8/subsurfaceTools/pkg/cloud"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 var (
@@ -39,16 +41,20 @@ func readCloudConfig2Struct(configFile string) (cloud.CloudDownload, error) {
 func runDownload(configFile, logConfig string) {
 	var cfg zap.Config
 	var cloudCnfg cloud.CloudDownload
+	logFileName := "log_" + cloud.TimeToStr(time.Now(), "2006-01-02T15_04_05") + ".json"
+	errorFileName := "log_errors_" + cloud.TimeToStr(time.Now(), "2006-01-02T15_04_05") + ".json"
 	if logConfig == "" {
 		cfg = zap.Config{
 
 			Level:            zap.NewAtomicLevelAt(zap.InfoLevel),
 			Development:      false,
-			Encoding:         "console",
+			Encoding:         "json",
 			EncoderConfig:    zap.NewProductionEncoderConfig(),
-			OutputPaths:      []string{"stdout"},
-			ErrorOutputPaths: []string{"stderr"},
+			OutputPaths:      []string{"stdout", "./" + logFileName},
+			ErrorOutputPaths: []string{"stderr", "./" + errorFileName},
 		}
+		//just encode the time in RFC3339 as the default is epoch from production config
+		cfg.EncoderConfig.EncodeTime = zapcore.RFC3339TimeEncoder
 	} else {
 		//parse in the log configuration
 		if rawJSON, err := ioutil.ReadFile(logConfig); err != nil {
