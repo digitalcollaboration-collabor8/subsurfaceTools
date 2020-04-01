@@ -38,7 +38,7 @@ func TimeToStr(timeObj time.Time, format string) string {
 }
 
 func Authenticate() (string, error) {
-	zap.S().Infof("Authenticating")
+
 	var resp *http.Response
 	var err error
 	var clientId, clientSecret, tokenUrl, resourceId string
@@ -52,7 +52,7 @@ func Authenticate() (string, error) {
 		zap.S().Errorf(errorMessage)
 		return "", errors.New(errorMessage)
 	}
-
+	zap.S().Infof("Authenticating,clientId:%s,resource:%s", clientId, resourceId)
 	formData := url.Values{
 		"grant_type":    {"client_credentials"},
 		"client_id":     {clientId},
