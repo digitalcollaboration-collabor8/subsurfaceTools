@@ -312,6 +312,10 @@ func RunQueryAndDownloadFiles(fQuery FileQuery, token, subscriptionKey, graphQLU
 			return err
 		}
 	}
+	zap.S().Infof("Running file query for, field:%s,fileType:%s, reportType:%s,timeRange:%s-%s, useUploadedFrom:%s",
+		fQuery.Field,
+		fQuery.FileType, fQuery.ReportType, fQuery.TimeFrom,
+		fQuery.TimeTo, fQuery.UseUploadedFrom)
 	zap.S().Debugf("Generated query:%s", query)
 	if dObj, _, err = RunGraphQueryForFiles(token, graphQLUrl,
 		subscriptionKey, query); err != nil {
@@ -521,17 +525,17 @@ func DownloadFile(fileReference, fileURL, token, subscriptionKey, format string)
 func buildFileQuery(rolldays int, dateFrom, dateTo string) FileQuery {
 	fQuery := FileQuery{}
 	if rolldays != common.Rolldays_default && rolldays != 0 {
-		zap.S().Infof("Rolldays is not set to the default:%d, but:%d will generate date range based on this", common.Rolldays_default, rolldays)
+		zap.S().Debugf("Rolldays is not set to the default:%d, but:%d will generate date range based on this", common.Rolldays_default, rolldays)
 		start, end := common.RollDays(rolldays)
 
 		fQuery.TimeFrom = common.FormatTime2QueryDayString(start)
 		fQuery.TimeTo = common.FormatTime2QueryDayString(end)
-		zap.S().Infof("Generated date range from rolldays, start:%s ,end:%s", fQuery.TimeFrom, fQuery.TimeTo)
+		zap.S().Debugf("Generated date range from rolldays, start:%s ,end:%s", fQuery.TimeFrom, fQuery.TimeTo)
 	} else {
 		//not rolling days using fixed setup
 		fQuery.TimeFrom = dateFrom
 		fQuery.TimeTo = dateTo
-		zap.S().Infof("Using date range, start:%s, end:%s", dateFrom, dateTo)
+		zap.S().Debugf("Using date range, start:%s, end:%s", dateFrom, dateTo)
 	}
 	return fQuery
 }
