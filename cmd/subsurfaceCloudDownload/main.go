@@ -44,14 +44,18 @@ func runDownload(configFile, logConfig string) {
 	logFileName := "log_" + cloud.TimeToStr(time.Now(), "2006-01-02T15_04_05") + ".json"
 	errorFileName := "log_errors_" + cloud.TimeToStr(time.Now(), "2006-01-02T15_04_05") + ".json"
 	if logConfig == "" {
+		//just make the logs dir if not exists
+		if err := os.MkdirAll("./logs", 0755); err != nil {
+			panic(err)
+		}
 		cfg = zap.Config{
 
 			Level:            zap.NewAtomicLevelAt(zap.InfoLevel),
 			Development:      false,
 			Encoding:         "json",
 			EncoderConfig:    zap.NewProductionEncoderConfig(),
-			OutputPaths:      []string{"stdout", "./" + logFileName},
-			ErrorOutputPaths: []string{"stderr", "./" + errorFileName},
+			OutputPaths:      []string{"stdout", "./logs/" + logFileName},
+			ErrorOutputPaths: []string{"stderr", "./logs/" + errorFileName},
 		}
 		//just encode the time in RFC3339 as the default is epoch from production config
 		cfg.EncoderConfig.EncodeTime = zapcore.RFC3339TimeEncoder
