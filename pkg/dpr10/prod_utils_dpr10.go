@@ -150,6 +150,7 @@ func BuildDataSetsDPR_10(objects []WITSMLComposite) []common.DataSet {
 
 	//build the report file info
 	datasets = append(datasets, extractFileInformation("REPORT_FILE_INFO", objects))
+	datasets = append(datasets, extractFacilityInfo("FACILITIES", groupedFacilities))
 	datasets = append(datasets, extractFlowInformation("FLOW_INFO", objects))
 	//add the document info data
 	datasets = append(datasets, extractDocumentInfo_DPR10("DOCUMENT_INFO", objects))
@@ -185,6 +186,27 @@ func BuildJsonFileForProduction(path string, objects []WITSMLComposite) error {
 	}
 	//need to write it to a file
 	return common.Write2File(path, data)
+}
+
+func extractFacilityInfo(dataSetName string, groupedFacilities map[string][]Facility) common.DataSet {
+	var rows []common.RowData
+	dataSet := common.DataSet{}
+	dataSet.Name = dataSetName
+	dataSet.HeadersName = []string{"FacilityKind", "FacilityName", "UidRef", "NameKind", "FileName"}
+	for kind, facilities := range groupedFacilities {
+		for i := 0; i < len(facilities); i++ {
+			row := common.RowData{}
+			//add the top identification information so that it can be bound back to the original file
+			row.AddStrValue(kind)
+			row.AddStrValue(facilities[i].Name.Name)
+			row.AddStrValue(facilities[i].Name.UidRef)
+			row.AddStrValue(facilities[i].Name.Kind)
+			row.AddStrValue(facilities[i].DataIdentification.DataIdentification.FileName)
+			rows = append(rows, row)
+		}
+	}
+	dataSet.Rows = rows
+	return dataSet
 }
 
 func extractFlowInformation(dataSetName string, objects []WITSMLComposite) common.DataSet {

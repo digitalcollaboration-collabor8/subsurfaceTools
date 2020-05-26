@@ -142,6 +142,7 @@ func BuildDataSets(objects []Objects) []common.DataSet {
 	groupedProdFacilities = OrganiseProdFacilitiesByKind(objects)
 	//build the report file info
 	datasets = append(datasets, extractFileInformation("REPORT_FILE_INFO", objects))
+	datasets = append(datasets, extractFacilityInfo("FACILITIES", groupedProdFacilities))
 	//add the document info data
 	datasets = append(datasets, extractDocumentInfo("DOCUMENT_INFO", objects))
 	//add the reportcontext
@@ -166,6 +167,27 @@ func BuildDataSets(objects []Objects) []common.DataSet {
 	addReportContextToAllInstances(rContext, datasets)
 	return datasets
 
+}
+
+func extractFacilityInfo(dataSetName string, groupedFacilities map[string][]Facility) common.DataSet {
+	var rows []common.RowData
+	dataSet := common.DataSet{}
+	dataSet.Name = dataSetName
+	dataSet.HeadersName = []string{"FacilityKind", "FacilityName", "UidRef", "NameKind", "FileName", "Installation"}
+	for kind, facilities := range groupedFacilities {
+		for i := 0; i < len(facilities); i++ {
+			row := common.RowData{}
+			//add the top identification information so that it can be bound back to the original file
+			row.AddStrValue(kind)
+			row.AddStrValue(facilities[i].Name.Name)
+			row.AddStrValue(facilities[i].Name.UidRef)
+			row.AddStrValue(facilities[i].Name.Kind)
+			row.AddStrValue(facilities[i].DataIdentification.DataIdentification.FileName)
+			rows = append(rows, row)
+		}
+	}
+	dataSet.Rows = rows
+	return dataSet
 }
 
 func addReportContextToAllInstances(rContext common.DataSet, dataSets []common.DataSet) {
